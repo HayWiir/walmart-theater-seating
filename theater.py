@@ -78,9 +78,7 @@ class Theater:
                 end_seat = start_seat + num_seats - 1
                 return [start_seat, end_seat]
 
-        return None               
-
-
+        return None
 
     def reserve(self, num_seats):
         """
@@ -93,7 +91,7 @@ class Theater:
         """
 
         if num_seats > sum(self.available_seats):
-            return None
+            return []
 
         #With Buffer
         for current_row in self.preferred_rows:
@@ -101,7 +99,6 @@ class Theater:
                 continue
 
             else:
-                # print(current_row)
                 available_ranges = self.available_ranges(current_row, self.buffer)
                 reserved_range = self.reserve_in_range(num_seats, available_ranges)
                 
@@ -109,7 +106,7 @@ class Theater:
                     self.add_reservation(current_row, reserved_range)
                     reservation = [f"{self.row_mapping[current_row]}{i+1}" for i in range(reserved_range[0], reserved_range[1]+1)]
                     return reservation
-
+        
         #Without buffer
         for current_row in self.preferred_rows:
             if num_seats > self.available_seats[current_row]:
@@ -124,14 +121,44 @@ class Theater:
                     reservation = [f"{self.row_mapping[current_row]}{i+1}" for i in range(reserved_range[0], reserved_range[1]+1)]
                     return reservation
 
-        #Separately
+        #Separately with buffer
         reservation = []
-        for current_row in self.preferred_rows:
-            
+        reservations_copy = self.reservations.copy()
+        num_seats_copy = num_seats
 
+        for current_row in self.preferred_rows:
+            available_ranges = self.available_ranges(current_row, self.buffer)
+            for seat_range in available_ranges:
+                possible_seats = seat_range[1] - seat_range[0] + 1
+
+                if possible_seats > num_seats:
+                    seat_range[1] = seat_range[0] + num_seats - 1
+                    possible_seats = num_seats
+                
+                self.add_reservation(current_row, seat_range)
+                reservation += [f"{self.row_mapping[current_row]}{i+1}" for i in range(seat_range[0], seat_range[1]+1)]
+                num_seats -= possible_seats
+
+                if num_seats==0:
+                    return reservation
+
+        self.reservations = reservations_copy
+        num_seats = num_seats_copy
+
+
+        #Separately without buffer
+        reservation = []
+        reservations_copy = self.reservations.copy()
+        num_seats_copy = num_seats
+
+        for current_row in self.preferred_rows:
             available_ranges = self.available_ranges(current_row)
             for seat_range in available_ranges:
                 possible_seats = seat_range[1] - seat_range[0] + 1
+
+                if possible_seats > num_seats:
+                    seat_range[1] = seat_range[0] + num_seats - 1
+                    possible_seats = num_seats
                 
                 self.add_reservation(current_row, seat_range)
                 reservation += [f"{self.row_mapping[current_row]}{i+1}" for i in range(seat_range[0], seat_range[1]+1)]
@@ -139,44 +166,10 @@ class Theater:
                 num_seats -= possible_seats
 
                 if num_seats==0:
-                    return reservation
+                    return reservation       
+       
+        self.reservations = reservations_copy
+        num_seats = num_seats_copy
 
+        return []       
 
-        raise EOFError       
-
-
-
-
-if __name__ == "__main__":
-    
-    theater = Theater()
-    # theater.reservations = [[], [], [], [], [], [[7,16]], [], [], [], []]
-
-    print(theater.available_seats)
-
-    print(theater.reservations)
-    # print(theater.available_ranges(5))
-    print()
-
-    # print(theater.reserve(5))
-    # print(theater.reserve(15))
-    # print(theater.reserve(15))
-    # print(theater.reserve(15))
-    # print(theater.reserve(15))
-    # print(theater.reserve(15))
-    # print(theater.reserve(15))
-    # print(theater.reserve(15))
-    # print(theater.reserve(15))
-    # print(theater.reserve(15))
-    # print(theater.reserve(15))
-    # print(theater.reserve(5))
-    # print(theater.reserve(15))
-
-
-    # theater.add_reservation(3, [18,19])
-    # theater.add_reservation(3, [1,3])
-    # theater.add_reservation(3, [4,6])
-
-    # print(theater.available_ranges(3))
-    print()
-    # print(theater.reservations[5])
