@@ -16,7 +16,7 @@ There are 3 files:
 
 Input Format:
 - Input is read from an `input.txt` file placed in root of repo directory.
-- There can be multiple requests in each file. Eac request on a newline.
+- There can be multiple requests in each file. Each request on a newline.
 - Requests are of the format {Request ID} {Number of Tickets requested}. For e.g. `R001 4`
 
 Output Format:
