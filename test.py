@@ -81,6 +81,24 @@ def test_reserve_no_buffer():
 def test_reserve_separate():
     theater = Theater()
 
+    theater.reserve(15)
+    theater.reserve(15)
+    theater.reserve(15)
+    theater.reserve(15)
+    theater.reserve(15)
+    theater.reserve(15)
+    theater.reserve(15)
+    theater.reserve(15)
+    theater.reserve(15)
+    theater.reserve(15)
+
+    #All rows are full (except 1 seat per row, more than one reservations will be separate)
+    assert(theater.reserve(9) == ['F19', 'F20', 'G19', 'G20', 'E19', 'E20', 'H19', 'H20', 'I19'])
+    assert(theater.reserve(15) == ['F16', 'F17', 'F18', 'G16', 'G17', 'G18', 'E16', 'E17', 'E18', 'H16', 'H17', 'H18', 'I16', 'I17', 'I18'])
+
+def test_reserve_excess():
+    theater = Theater()
+
     theater.reserve(19)
     theater.reserve(19)
     theater.reserve(19)
@@ -92,6 +110,4 @@ def test_reserve_separate():
     theater.reserve(19)
     theater.reserve(19)
     #All rows are full (except 1 seat per row, more than one reservations will be separate)
-    assert(theater.reserve(5) == ['F20', 'G20', 'E20', 'H20', 'I20'])
-
-# pytest.main()
+    assert(theater.reserve(20) == [])    
