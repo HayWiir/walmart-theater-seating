@@ -7,7 +7,7 @@ Logic:
 - Maintain a preference of rows (middle rows have higher preference)
 - Assign seating in preferred rows from left to right
 - Earliest requests assigned first.
-- All seats are together if possible. Even if seats have to be split, the split groups are assigned together. (Preferred row seating has higher preference over Together seating)
+- All seats are together if possible. Even if seats have to be split, the split groups are assigned together. Together Seating has higher preference over Preferred row seating; until tickets are split.
  
 There are 3 files:
 - `theater.py`: Contains theater class and methods that implement the algorithm as well as helper functions.
