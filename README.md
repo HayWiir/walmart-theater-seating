@@ -15,14 +15,14 @@ There are 3 files:
 - `test.py`: Unit test file. Can be executed using pytest.
 
 Input Format:
-- Input is read from an `input.txt` file placed in root of repo directory.
+- Input is read from an input file placed in root of repo directory.
 - There can be multiple requests in each file. Each request on a newline.
 - Requests are of the format {Request ID} {Number of Tickets requested}. For e.g. `R001 4`
 
 Output Format:
-- Output is written to `output.txt` created in the root of repo directory.
+- Output is written to `output.txt` created in the root of repo directory. The full path is returned on the terminal.
 - Output is of the format {Request ID} {Reserved Tickets}. For e.g. `R001 F1,F2,F3,F4`
 
 How to run: 
-- General Execution: `python3 main.py` (Make sure `input.txt` exists)
+- General Execution: `python3 main.py /path/to/input` (Make sure `input.txt` exists)
 - Tests: `python3 -m pytest test.py`
